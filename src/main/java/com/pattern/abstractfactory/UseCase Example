@@ -1,0 +1,79 @@
+interface Agent
+{
+	public void handleWorkRequest();
+}
+public VoiceAgent implements Agent
+{
+	Override :  handleWorkRequest()
+}
+public VideoAgent implements Agent
+{
+	Override :  handleWorkRequest()
+}
+
+public ChatAgent implements Agent
+{
+	Override :  handleWorkRequest()
+}
+public SMSAgent implements Agent
+{
+	Override :  handleWorkRequest()
+}
+
+AbstractFactory
+{
+	public abstract Agent getAgent(Channel)
+}
+
+public InboundAgentQueueFactory extends AbstractFactory
+{
+	Override
+	Agent getAgent(Channel : VOICE, VIDEO)
+	{
+		return new VoiceAgent() 
+			OR
+		return new VideoAgent()
+	}
+}
+
+public OutboudAgentQueueFactory extends AbstractFactory
+{
+	Override
+	Agent getAgent(Channel : SMS, CHAT)
+	{
+		return new SMSAgent() 
+			OR
+		return new ChatAgent()
+	}
+}
+
+Factory Producer
+{
+	static AbstractFactory getQueueFactory(QueueType : INBOUND, OUTBOUND)
+	{
+		INBOUND
+		return new InboundAgentQueueFactory()
+		OUTBOUND
+		return new OutboundAgentQueueFactory()
+	}
+}
+
+main()
+{
+	A.	AbstractFactory inboundQueueFactory = getQueueFactory(INBOUND)
+		Agent voiceAgent = inboundQueueFactory.getAgent(VOICE)
+		voiceAgent.handleWorkRequest()
+	
+	B.	Agent videoAgent = inboundQueueFactory.getAgent(VIDEO)
+		videoAgent.handleWorkRequest()
+	
+	C.	AbstractFactory outboundQueueFactory = getQueueFactory(OUTBOUND)
+		Agent smsAgent = outboundQueueFactory.getAgent(SMS)
+		smsAgent.handleWorkRequest()
+	
+	D.	AbstractFactory outboundQueueFactory = getQueueFactory(OUTBOUND)
+		Agent chatAgent = outboundQueueFactory.getAgent(CHAT)
+		chatAgent.handleWorkRequest()
+}
+	
+	
