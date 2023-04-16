@@ -1,0 +1,90 @@
+Adapter pattern works as a bridge between two incompatible interfaces.
+This type of design pattern comes under structural pattern as this pattern combines the capability of two independent interfaces.
+
+Definition:
+==========
+The adapter pattern convert the interface of a class into another interface clients expect.
+Adapter lets classes work together that couldn’t otherwise because of incompatible interfaces
+
+To use an adapter:
+==================
+The client makes a request to the adapter by calling a method on it using the target interface.
+The adapter translates that request on the adaptee using the adaptee interface.
+Client receive the results of the call and is unaware of adapter’s presence.
+
+
+POJO
+@Table - Some DB Annotation
+class UserEntity { // similary CustomerEntity, SessionEntity
+	fieldsX
+	fieldsY
+	fieldsZ
+}  
+
+interface Adaptees {
+	default abstract public UserEntity getUserEntity(UserModel model) {}
+	default abstract public SessionEntity getSessionEntity(SessionModel model) {} 
+	default abstract public CustomerEntity getCustomerEntity(CustomerModel model) {}	
+}
+
+class UserAdaptee implements Adaptees { 
+	
+	public UserEntity getUserEntity(UserModel userModel) {
+		// Map userModel to userEntity, AND
+		return UserEntity;
+	}
+}  
+
+class CustomerAdaptee implements Adaptees { 
+	
+	public CustomerEntity getCustomerEntity(CustomerModel custModel) {
+		// Map custModel to custEntity, AND
+		return CustomerEntity;
+	}
+}
+
+interface IDataAdapter {
+	default abstract public UserEntity convert(UserModel model) {}
+	default abstract public SessionEntity convert(SessionModel model) {}
+	default abstract public CustomerEntity convert(CustomerModel model) {}
+}
+
+class UserModelToEntityAdapter implements IDataAdapter {
+
+	// Adaptee
+	Adaptees userAdaptee;
+	UserModel model;
+	
+	UserModelToEntityAdapter() {
+		userAdaptee = new UserAdaptee();
+	}
+	
+	public UserEntity convert(UserModel userModel) {
+		return userAdaptee.getUserEntity(userModel);
+	}
+}
+
+class CustomerModelToEntityAdapter implements IDataAdapter {
+
+	// Adaptee
+	Adaptees customerAdaptee;
+	CustomerModel model;
+
+	CustomerModelToEntityAdapter() {
+		customerAdaptee = new CustomerAdaptee();
+	}
+	
+	public CustomerEntity convert(CustomerModel custModel) {
+		return customerAdaptee.getCustomerEntity(custModel);
+	}
+}
+
+Client {
+	UserModel userModel = new UserModel(xxxx); // has something
+	IDataAdapter dataAdapter = new UserModelToEntityAdapter(model);
+	Entity userEntity  = dataAdapter.convert(userModel)
+
+	CustomerModel custModel = new CustomerModel(yyyy); // has something
+	IDataAdapter dataAdapter = new CustomerModelToEntityAdapter(custModel);
+	Entity userEntity  = dataAdapter.convert(custModel);
+}
