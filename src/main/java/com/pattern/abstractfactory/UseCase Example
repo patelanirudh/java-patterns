@@ -47,7 +47,13 @@ public OutboudAgentQueueFactory extends AbstractFactory
 	}
 }
 
-Factory Producer
+Abstract Factory Explanation - Creational Pattern
+--------------------------------------------------
+a)	A factory of factories
+b)	Responsible for creating a factory
+c)	Each generated factory can give the objects as per the Factory pattern
+
+FactoryProducer
 {
 	static AbstractFactory getQueueFactory(QueueType : INBOUND, OUTBOUND)
 	{
@@ -60,19 +66,18 @@ Factory Producer
 
 main()
 {
-	A.	AbstractFactory inboundQueueFactory = getQueueFactory(INBOUND)
+	A.	AbstractFactory inboundQueueFactory = FactoryProducer.getQueueFactory(INBOUND)
 		Agent voiceAgent = inboundQueueFactory.getAgent(VOICE)
 		voiceAgent.handleWorkRequest()
 	
 	B.	Agent videoAgent = inboundQueueFactory.getAgent(VIDEO)
 		videoAgent.handleWorkRequest()
 	
-	C.	AbstractFactory outboundQueueFactory = getQueueFactory(OUTBOUND)
+	C.	AbstractFactory outboundQueueFactory = FactoryProducer.getQueueFactory(OUTBOUND)
 		Agent smsAgent = outboundQueueFactory.getAgent(SMS)
 		smsAgent.handleWorkRequest()
 	
-	D.	AbstractFactory outboundQueueFactory = getQueueFactory(OUTBOUND)
-		Agent chatAgent = outboundQueueFactory.getAgent(CHAT)
+	D.	Agent chatAgent = outboundQueueFactory.getAgent(CHAT)
 		chatAgent.handleWorkRequest()
 }
 	

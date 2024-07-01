@@ -1,5 +1,13 @@
-Adapter pattern works as a bridge between two incompatible interfaces.
-This type of design pattern comes under structural pattern as this pattern combines the capability of two independent interfaces.
+Structural Pattern
+------------------
+Structural design patterns provide different ways to create a Class structure (for example, using inheritance and 
+composition to create a large Object from small Objects)
+
+Adapter Explanation 
+-------------------
+a)	Adapter pattern works as a bridge(or bridges the gap) between two incompatible interfaces.
+b)  The object that joins these unrelated interfaces to provide the necessary functionality to the client is called an "Adapter".
+c)	When you want to create a reusable class that cooperates with classes which don't have compatible interfaces.
 
 Definition:
 ==========

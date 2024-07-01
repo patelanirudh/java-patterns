@@ -1,0 +1,102 @@
+public interface SessionFactory {
+	ILegacy getLegacyAgents(AgentType aType)
+	IDigital getDigitalAgents(AgentType aType)
+}
+
+public class InboundSessionFactory implements SessionFactory {
+	ILegacy getLegacyAgents(AgentType aType) {
+		if (aType == AgentType.VOICE) {
+			return new VoiceAgent();
+		}
+	}
+	
+	IDigital getDigitalAgents(AgentType aType) {
+		if (aType == AgentType.CHAT) {
+			return new ChatAgent();
+		}
+	}
+}
+
+public class OutboundSessionFactory implements SessionFactory {
+	ILegacy getLegacyAgents(AgentType aType) {
+		if (aType == AgentType.VIDEO) {
+			return new VideoAgent();
+		}
+	}
+	
+	IDigital getDigitalAgents(AgentType aType) {
+		if (aType == AgentType.EMAIL) {
+			return new EmailAgent();
+		}
+	}
+}
+
+public interface IDigital {
+	public boolean startConversation();
+}
+class ChatAgent implements IDigital {
+
+	@Override
+	public boolean startConversation() {
+		//chatting
+	}
+}
+class EmailAgent implements IDigital {
+	@Override
+	public boolean startConversation() {
+		//emailing
+	}
+}
+	
+public interface ILegacy {
+	public void initateCall();
+}
+class VoiceAgent implements ILegacy {
+	@Override
+	public void initateCall() {
+	}
+}
+class VideoAgent implements ILegacy {
+	@Override
+	public void initateCall() {
+	}
+}
+
+public enum SessionFactoryType {
+	INBOUND_SESSION,
+	OUTBOUND_SESSION
+}
+
+public enum AgentType {
+	VOICE, 
+	VIDEO,
+	CHAT,
+	EMAIL
+}
+
+public abstract class SessionFactoryProducer {
+	
+	public static SessionFactory createSessionFactory(SessionFactoryType sfType) {
+		if (sfType == SessionFactoryType.INBOUND_SESSION) {
+			return new InboundSessionFactory();
+		} else if (sfType == SessionFactoryType.OUTBOUND_SESSION) {
+			return new OutboundSessionFactory();
+		}
+	}
+
+	main() {
+		// INBOUND
+		SessionFactory inboundSessFactory = SessionFactoryProducer.createSessionFactory(SessionFactoryType.INBOUND_SESSION);
+		ILegacy voiceAgent = inboundSessFactory.getLegacyAgents(AgentType.VOICE);
+		voiceAgent.initateCall();
+		IDigital chatAgent = inboundSessFactory.getDigitalAgents(AgentType.CHAT);
+		chatAgent.startConversation();
+		
+		// OUTBOUND
+		SessionFactory outboundSessFactory = SessionFactoryProducer.createSessionFactory(SessionFactoryType.OUTBOUND_SESSION);
+		ILegacy videoAgent = outboundSessFactory.getLegacyAgents(AgentType.VIDEO);
+		videoAgent.initateCall();
+		IDigital emailAgent = outboundSessFactory.getDigitalAgents(AgentType.EMAIL);
+		emailAgent.startConversation();
+	}
+}

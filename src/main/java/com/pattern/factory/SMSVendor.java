@@ -4,6 +4,7 @@ public class SMSVendor implements Vendor {
 	
 	public SMSVendor() {
 		 System.out.println("SMSVendor Ctor : " + Vendor.greetings());
+		 defaultMethod();
 	}
 	
 	@Override

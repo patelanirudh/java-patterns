@@ -1,0 +1,21 @@
+Issue:
+------
+As you must have observed in the above example, the Client creates objects of either TwoWheeler or FourWheeler based on some 
+input during the construction of its object. 
+
+Say, the library introduces a new class ThreeWheeler to incorporate three-wheeler vehicles also. What would happen? 
+The client will end up chaining a new else-if in the conditional ladder to create objects of ThreeWheeler. 
+Which in turn will need the Client to be recompiled. So, each time a new change is made on the library side, the 
+Client would need to make some corresponding changes at its end and recompile the code. Sounds bad? This is a very bad practice of design.
+
+Factory Explanation - Creational Pattern
+----------------------------------------
+a)	Used when we have a superclass with multiple subclasses and based on input, we need to return one of the subclasses
+b)	We can apply a singleton pattern on the factory class or make the factory method static
+
+		 Vendor (interface)
+		sendSMS()
+ZangVendor	, 	IPSMVendor
+sendSMS()		sendSMS()
+
+
