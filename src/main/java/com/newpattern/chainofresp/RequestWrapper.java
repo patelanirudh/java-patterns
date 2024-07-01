@@ -17,10 +17,10 @@ public class RequestWrapper {
 	List<ICallRequestHandler> callRequestHandlers;
 	
 	public RequestWrapper() {
-		buildChain();
+		buildHandlerChain();
 	}
 	
-	void buildChain() {
+	void buildHandlerChain() {
 		callRequestHandlers = Arrays.asList(new QueryDeptHandler(), new LoanCardDeptHandler(), 
 				new BillingDeptHandler(), new ProductServicesDeptHandler());
 	}
@@ -28,10 +28,12 @@ public class RequestWrapper {
 	void makeRequest(CallRequest callRequest) {
 		Optional<ICallRequestHandler> requestHandler = callRequestHandlers.stream()
 																	.sorted(Comparator.comparing(ICallRequestHandler::getPriority))
-																	.filter(handler -> handler.canHandleRequest(callRequest))
+																	// this is where passing of deptHandlers is happening
+																	.filter(deptHandler -> deptHandler.canHandleRequest(callRequest))
 																	.findFirst();
 		
-		requestHandler.ifPresentOrElse(handler -> handler.handle(callRequest), () -> logger.info("Your call request cannot be handled ryt now"));
+		requestHandler.ifPresentOrElse(deptHandler -> deptHandler.handle(callRequest),
+				() -> logger.info("Your call request cannot be handled ryt now"));
 	}
 	
 	public static void main(String[] args) {
